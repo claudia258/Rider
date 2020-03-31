@@ -5,6 +5,8 @@
 
         $('#buttonList').click(function(){
             caricaRider();
+            caricaRiderPartiti();
+            mostra(true);
          });
  });
 
@@ -13,8 +15,7 @@
 
 function caricaRider(){
     
-    doCall('GET', 'http://212.237.32.76:3002/list', undefined, function(json){
-        caricaRiderPartiti();    
+    doCall('GET', 'http://212.237.32.76:3002/list', undefined, function(json){  
         buildCreatedTable(json);
         $('.startRider').click(
             function rideOrder(){
@@ -64,7 +65,7 @@ function buildDeliveredTable(json){
     
     $.each(json, function(i,item){
         if(item.status == 'CONSEGNA'){
-        rider += '<tr><td>'+item._id+'</td><td>'+item.merce+'</td><td><font color="orange">'+item.status+'</td></font><td>'+item.startDate+'</td><td>In consegna</td></tr>';
+        rider += '<tr><td>'+item._id+'</td><td>'+item.merce+'</td><td><font color="orange">'+item.status+'</td></font><td>'+item.startDate+'</td><td><i>IN CONSEGNA</i></td></tr>';
         }else{
         rider += '<tr><td>'+item._id+'</td><td>'+item.merce+'</td><td><font color="green">'+item.status+'</td></font><td>'+item.startDate+'</td><td>'+item.endDate+'</td></tr>';
         }
@@ -83,4 +84,24 @@ function doCall(typeRequest, urlPath, parametri, callbackOnSuccess, callbackOnEr
 		error: callbackOnError
 	});
 }
+
+function mostra(show){
+	if(show){
+        $("table#created").show();
+        $("table#delivered").show();
+		$("div#titoleCreati").show();
+        $("div#titolePartiti").show();
+        $("div#titole").hide();
+        $("#buttonList").hide();
+	}
+	else{
+        $("table#created").hide();
+        $("table#delivered").hide();
+		$("div#titoleCreati").hide();
+        $("div#titolePartiti").hide();
+        $("div#titole").show();
+        $("#buttonList").show();
+	}
+}
+
 

@@ -1560,25 +1560,29 @@ pre code {
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(227, 255, 250, 0.918);
+}
+
+.table-strip tbody tr:nth-of-type(odd) {
+  background-color: rgba(184, 255, 249, 0.726);
 }
 
 .table-hover tbody tr:hover {
-  color: #212529;
-  background-color: rgba(0, 0, 0, 0.075);
+  color: #000000;
+  background-color: rgba(183, 252, 248, 0.596);
 }
 
 .table-primary,
 .table-primary > th,
 .table-primary > td {
-  background-color: #b8daff;
+  background-color: #80bdff;
 }
 
 .table-primary th,
 .table-primary td,
 .table-primary thead th,
 .table-primary tbody + tbody {
-  border-color: #7abaff;
+  border-color: #4ba1fc;
 }
 
 .table-hover .table-primary:hover {
@@ -1593,7 +1597,7 @@ pre code {
 .table-secondary,
 .table-secondary > th,
 .table-secondary > td {
-  background-color: #d6d8db;
+  background-color: #4b70a8;
 }
 
 .table-secondary th,
@@ -1637,7 +1641,7 @@ pre code {
 .table-info,
 .table-info > th,
 .table-info > td {
-  background-color: #bee5eb;
+  background-color: #ffececde;
 }
 
 .table-info th,

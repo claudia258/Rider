@@ -3,11 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Rider</title>
-<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
 <script src="js/jquery-1.10.2.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap.bundle.js"></script>
 <script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+       mostra(false);
+	});
+</script>
 
 </script>
 </head>
@@ -20,10 +25,19 @@
     </nav>
 
     <div class="container">
-       
-    <table class="table table-striped" id="created">
+
+        <div id = "titole">
+            <p>
+                <h5><i>Click on List to find or ride your order</i></h5>
+            </p>
+        </div>
+
+    <div id = "titoleCreati">
+        <h5><b>Ordini Creati:</b></h5> 
+    </div>
+    <table class="table table-striped table-hover" id="created">
         <thead >
-            <h5><b>Ordini Creati:</b></h5> 
+
         </thead>
         
         
@@ -31,10 +45,12 @@
         </tbody>
     </table>
 
-    <table class="table table-striped" id="delivered">
+    <div id = "titolePartiti">
+        <h5><b> Ordini Partiti/Consegnati:</b></h5> 
+    </div>
+    <table class="table table-hover table-info" id="delivered">
         <thead>
-             <h5><b> Ordini Partiti/Consegnati:</b></h5> 
-           
+              
         </thead>
 
 
