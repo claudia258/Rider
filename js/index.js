@@ -64,10 +64,13 @@ function buildDeliveredTable(json){
     table.append(tableHead);
     
     $.each(json, function(i,item){
+        var dataPartenza = new Date(item.startDate).toLocaleString('en-GB', { timeZone: 'UTC' });
+        var dataArrivo = new Date(item.endDate).toLocaleString('en-GB', { timeZone: 'UTC' });
+        
         if(item.status == 'CONSEGNA'){
-        rider += '<tr><td>'+item._id+'</td><td>'+item.merce+'</td><td><font color="orange">'+item.status+'</td></font><td>'+item.startDate+'</td><td><i>IN CONSEGNA</i></td></tr>';
+        rider += '<tr><td>'+item._id+'</td><td>'+item.merce+'</td><td><font color="orange">'+item.status+'</td></font><td>'+dataPartenza+'</td><td><i>IN CONSEGNA</i></td></tr>';
         }else{
-        rider += '<tr><td>'+item._id+'</td><td>'+item.merce+'</td><td><font color="green">'+item.status+'</td></font><td>'+item.startDate+'</td><td>'+item.endDate+'</td></tr>';
+        rider += '<tr><td>'+item._id+'</td><td>'+item.merce+'</td><td><font color="green">'+item.status+'</td></font><td>'+dataPartenza+'</td><td>'+dataArrivo+'</td></tr>';
         }
     });
 	table.append(rider);
