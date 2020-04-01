@@ -21,6 +21,7 @@ function caricaRiderCreati() {
             function rideOrder() {
                 var id = $(this).attr("data-id");
                 doCall('GET', 'http://212.237.32.76:3002/start/' + id, undefined, function () {
+                    caricaRiderCreati();
                     caricaRiderPartiti();
                 }, function () {
                     $.notify("Chiamata Fallita Riprovare!", "error");
