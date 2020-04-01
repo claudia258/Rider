@@ -10,9 +10,6 @@ $(document).ready(function () {
     });
 });
 
-
-
-
 function caricaRiderCreati() {
 
     doCall('GET', 'http://212.237.32.76:3002/list', undefined, function (json) {
@@ -32,8 +29,6 @@ function caricaRiderCreati() {
     });
 }
 
-
-
 function caricaRiderPartiti() {
     doCall('GET', 'http://212.237.32.76:3002/status', undefined, function (json) {
         buildDeliveredTable(json);
@@ -49,6 +44,7 @@ function buildCreatedTable(json) {
     table.empty();
     var tableHead = "<tr><td><b>ID</b></td><td><b>Merce</b></td><td><b>Stato</b></td><td><b></b></td></td>";
     table.append(tableHead);
+
     json.forEach(element => {
         rider += '<tr><td>' + element._id + '</td><td>' + element.merce + '</td><td><font color="red">' + element.status + '</td></font><td><button data-id="' + element._id + '" class="btn btn-sm btn-info startRider" style="width: 100px;" type="submit">Ride</button></td></tr>';
     });
@@ -58,8 +54,12 @@ function buildCreatedTable(json) {
 function buildDeliveredTable(json) {
     var table = $('#delivered');
     var rider = '';
-
     table.empty();
+
+    json = json.sort(function (a, b) {
+        json = ordinaByData(json);
+    });
+
     var tableHead = "<tr><td><b>ID</b></td><td><b>Merce</b></td><td><b>Stato</b></td><td><b>Partito</b></td><td><b>Consegnato</b></td></td>";
     table.append(tableHead);
 
@@ -73,7 +73,7 @@ function buildDeliveredTable(json) {
             rider += '<tr><td>' + element._id + '</td><td>' + element.merce + '</td><td><font color="green">' + element.status + '</td></font><td>' + dataPartenza + '</td><td>' + dataArrivo + '</td></tr>';
         }
     });
-           
+
     table.append(rider);
 }
 
@@ -108,4 +108,9 @@ function mostra(show) {
     }
 }
 
+function ordinaByData(json) {
+    return json.sort(function (a, b) {
+        return (new Date(b.startDate)) - (new Date(a.startDate));
+    });
+}
 
