@@ -1,71 +1,71 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Rider</title>
-<link href="css/bootstrap.css" rel="stylesheet">
-<script src="js/jquery-1.10.2.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/bootstrap.bundle.js"></script>
-<script type="text/javascript" src="js/index.js"></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-       mostra(false);
-	});
-</script>
 
-</script>
+<head>
+    <meta charset="UTF-8">
+    <title>Rider</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            mostra(false);
+        });
+    </script>
+
+    </script>
 </head>
+
 <body>
-   
-    <nav class="navbar navbar-expand-lg navbar-light "
-		style="background-color: #bce3ff;">
-		<a class="navbar-brand" style="color: #000000;"
-            href="file:///Users/claudiaesposito/VSC/Rider/index.html">Rider 🛵</a>
+
+    <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #bce3ff;">
+        <a class="navbar-brand" style="color: #000000;" href="#">Rider 🛵</a>
     </nav>
 
     <div class="container">
 
-        <div id = "titole">
+        <div id="titole">
             <p>
                 <h5><i>Click on List to find or ride your order</i></h5>
             </p>
         </div>
 
-    <div id = "titoleCreati">
-        <h5><b>Ordini Creati:</b></h5> 
+        <div id="titoleCreati">
+            <h5><b>Ordini Creati:</b></h5>
+        </div>
+        <table class="table table-striped table-hover" id="created">
+            <thead>
+
+            </thead>
+
+
+            <tbody>
+            </tbody>
+        </table>
+
+        <div id="titolePartiti">
+            <h5><b> Ordini Partiti/Consegnati:</b></h5>
+        </div>
+        <table class="table table-hover table-info" id="delivered">
+            <thead>
+
+            </thead>
+
+
+            <tbody>
+            </tbody>
+        </table>
+
+
+        <div class="container">
+            <div class="btn-group" style="width: 100px;">
+                <button class="btn btn-sm btn-info caricamento" id="buttonList" type="submit">List</button>
+            </div>
+        </div>
     </div>
-    <table class="table table-striped table-hover" id="created">
-        <thead >
-
-        </thead>
-        
-        
-        <tbody>
-        </tbody>
-    </table>
-
-    <div id = "titolePartiti">
-        <h5><b> Ordini Partiti/Consegnati:</b></h5> 
-    </div>
-    <table class="table table-hover table-info" id="delivered">
-        <thead>
-              
-        </thead>
-
-
-        <tbody>
-        </tbody>
-    </table>
-
-
-    <div class="container">
-        <div class="btn-group" style="width: 100px;">
-           <button class="btn btn-sm btn-info caricamento" id="buttonList"
-           type="submit">List</button>
-       </div>
-    </div>
-</div>
 
 </body>
+
 </html>
