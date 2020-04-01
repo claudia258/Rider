@@ -10,6 +10,8 @@
     <script src="js/bootstrap.bundle.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript" src="js/notify.js"></script>
+    <script type="text/javascript" src="js/fakeLoader.js"></script>
+    <link href="css/fakeLoader.min.css" rel="stylesheet">
     <script type="text/javascript">
         $(document).ready(function () {
             $('.pagination').hide();
@@ -26,7 +28,10 @@
         <a class="navbar-brand" style="color: #000000;" href="#">Rider 🛵</a>
     </nav>
 
+
     <div class="container">
+
+        <div id="fakeLoaderId" class=""></div>
 
         <div id="titole">
             <p>
@@ -61,21 +66,21 @@
         </table>
         <nav aria-label="Page navigation example">
             <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
             </ul>
-          </nav>
+        </nav>
 
         <div class="container">
             <div class="btn-group" style="width: 100px;">

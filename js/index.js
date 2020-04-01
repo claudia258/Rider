@@ -4,10 +4,13 @@ $(document).ready(function () {
     }, 20000);
 
     $('#buttonList').click(function () {
+        showSpinner();
         caricaRiderCreati();
         caricaRiderPartiti();
         mostra(true);
     });
+
+    stopSpinner();
 });
 
 function caricaRiderCreati() {
