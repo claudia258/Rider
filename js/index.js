@@ -32,6 +32,11 @@ function caricaRiderCreati() {
 function caricaRiderPartiti() {
     doCall('GET', 'http://212.237.32.76:3002/status', undefined, function (json) {
         buildDeliveredTable(json);
+        $(function() {
+            $('.pagination').show();
+            paginateTable('#delivered', 10);
+            
+          });
     }, function () {
         $.notify("Chiamata Fallita Riprovare!", "error");
     });
@@ -113,4 +118,59 @@ function ordinaByData(json) {
         return (new Date(b.startDate)) - (new Date(a.startDate));
     });
 }
+
+function paginateTable(table, pages) {
+
+    var $table = $(table);
+    var $rows = $('tbody > tr', $table);
+    var numPages = Math.ceil($rows.length / pages) - 1;
+    var current = 0;
+
+    var $nav = $('ul', 'div.wrapper-paging');
+    var $back = $nav.find('li:first-child a');
+    var $next = $nav.find('li:last-child a');
+
+    $nav.find('a.paging-this strong').text(current + 1);
+    $nav.find('a.paging-this span').text(numPages + 1);
+    $back
+        .addClass('paging-disabled')
+        .click(function () {
+            pagination('<');
+        });
+    $next.click(function () {
+        pagination('>');
+    });
+
+    $rows.hide().slice(0, pages).show();
+
+    var pagination = function (direction) {
+        var reveal = function (current) {
+            $back.removeClass('paging-disabled');
+            $next.removeClass('paging-disabled');
+
+            $rows.hide().slice(0 * 10, 0 * 10 + 10).show();
+
+            $nav.find('a.paging-this strong').text(current + 1);
+        };
+
+        if (direction == '<') {
+            if (current > 1) {
+                reveal(current -= 1);
+            }
+            else if (current == 1) {
+                reveal(current -= 1);
+                $back.addClass('paging-disabled');
+            }
+        } else {
+            if (current < numPages - 1) {
+                reveal(current += 1);
+            }
+            else if (current == numPages - 1) {
+                reveal(current += 1);
+                $next.addClass('paging-disabled');
+            }
+        }
+    }
+}
+
 
