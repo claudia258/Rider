@@ -23,11 +23,11 @@ function caricaRiderCreati() {
                 doCall('GET', 'http://212.237.32.76:3002/start/' + id, undefined, function () {
                     caricaRiderPartiti();
                 }, function () {
-                    window.alert("Chiamata Fallita, Riprovare");
+                    $.notify("Chiamata Fallita Riprovare!", "error");
                 });
             });
     }, function () {
-        window.alert("Chiamata Fallita, Riprovare");
+        $.notify("Chiamata Fallita Riprovare!", "error");
     });
 }
 
@@ -37,7 +37,7 @@ function caricaRiderPartiti() {
     doCall('GET', 'http://212.237.32.76:3002/status', undefined, function (json) {
         buildDeliveredTable(json);
     }, function () {
-        window.alert("Chiamata Fallita, Riprovare");
+        $.notify("Chiamata Fallita Riprovare!", "error");
     });
 }
 
