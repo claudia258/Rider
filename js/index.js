@@ -59,49 +59,45 @@ function buildCreatedTable(json) {
 
 function buildDeliveredTable(json) {
     var table = $('#delivered');
-    var rider = '';
     table.empty();
-
     json = json.sort(function (a, b) {
         json = ordinaByData(json);
     });
-
     var tableHead = "<tr><td><b>ID</b></td><td><b>Merce</b></td><td><b>Stato</b></td><td><b>Partito</b></td><td><b>Consegnato</b></td></td>";
     table.append(tableHead);
-
     numeroPagine = Math.ceil(json.length / 10);
-    console.log(json.length);
     json.forEach(function (element, i) {
+        var rider = '';
         if ((paginaTabella + i) >= json.length || i >= 10) {
             return false;
         }
-            var dataPartenza = new Date(json[paginaTabella + i].startDate).toLocaleString('en-GB', { timeZone: 'UTC' });
-            var dataArrivo = new Date(json[paginaTabella + i].endDate).toLocaleString('en-GB', { timeZone: 'UTC' });
+        var dataPartenza = new Date(json[paginaTabella + i].startDate).toLocaleString('en-GB', { timeZone: 'UTC' });
+        var dataArrivo = new Date(json[paginaTabella + i].endDate).toLocaleString('en-GB', { timeZone: 'UTC' });
+        if (json[paginaTabella + i].status == 'CONSEGNA') {
+            rider += '<tr><td>' + json[paginaTabella + i]._id + '</td><td>' + json[paginaTabella + i].merce + '</td><td><font color="orange">' + json[paginaTabella + i].status + '</td></font><td>' + dataPartenza + '</td><td><i>IN CONSEGNA</i></td></tr>';
+        } else {
+            rider += '<tr><td>' + json[paginaTabella + i]._id + '</td><td>' + json[paginaTabella + i].merce + '</td><td><font color="green">' + json[paginaTabella + i].status + '</td></font><td>' + dataPartenza + '</td><td>' + dataArrivo + '</td></tr>';
+        }
+        table.append(rider);
 
-            if (json[paginaTabella + i].status == 'CONSEGNA') {
-                rider += '<tr><td>' + json[paginaTabella + i]._id + '</td><td>' + json[paginaTabella + i].merce + '</td><td><font color="orange">' + json[paginaTabella + i].status + '</td></font><td>' + dataPartenza + '</td><td><i>IN CONSEGNA</i></td></tr>';
-            } else {
-                rider += '<tr><td>' + json[paginaTabella + i]._id + '</td><td>' + json[paginaTabella + i].merce + '</td><td><font color="green">' + json[paginaTabella + i].status + '</td></font><td>' + dataPartenza + '</td><td>' + dataArrivo + '</td></tr>';
-            }
-            table.append(rider);
     });
-        $(function () {
-            window.pagObj = $('#pagination').twbsPagination({
-                totalPages: numeroPagine,
-                visiblePages: 5,
-                onPageClick: function (event, page) {
-                    $("#delivered").empty();
-                    paginaTabella = (page - 1) * 10;
-                    buildDeliveredTable(json)
-                    console.log("cambio pagina");
 
-                }
-            }).on('page', function (event, page) {
-                console.info(page + ' (from event listening)');
-            });
+    $(function () {
+        window.pagObj = $('#pagination').twbsPagination({
+            totalPages: numeroPagine,
+            visiblePages: 5,
+            initiateStartPageClick: false,
+            onPageClick: function (event, page) {
+                $("#delivered").empty();
+                paginaTabella = (page - 1) * 10;
+                buildDeliveredTable(json)
+                console.log("cambio pagina");
+
+            }
+        }).on('page', function (event, page) {
+            console.info(page + ' (from event listening)');
         });
-    
-
+    });
 }
 
 //Utility
