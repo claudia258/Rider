@@ -11,8 +11,9 @@ $(document).ready(function () {
         caricaRiderPartiti();
         $("#pagination").show();
         mostra(true);
+        stopSpinner();
     });
-    stopSpinner();
+    
 });
 
 function caricaRiderCreati() {
@@ -63,8 +64,10 @@ function buildDeliveredTable(json) {
     json = json.sort(function (a, b) {
         json = ordinaByData(json);
     });
+
     var tableHead = "<tr><td><b>ID</b></td><td><b>Merce</b></td><td><b>Stato</b></td><td><b>Partito</b></td><td><b>Consegnato</b></td></td>";
     table.append(tableHead);
+
     numeroPagine = Math.ceil(json.length / 10);
     json.forEach(function (element, i) {
         var rider = '';
@@ -79,9 +82,7 @@ function buildDeliveredTable(json) {
             rider += '<tr><td>' + json[paginaTabella + i]._id + '</td><td>' + json[paginaTabella + i].merce + '</td><td><font color="green">' + json[paginaTabella + i].status + '</td></font><td>' + dataPartenza + '</td><td>' + dataArrivo + '</td></tr>';
         }
         table.append(rider);
-
     });
-
     $(function () {
         window.pagObj = $('#pagination').twbsPagination({
             totalPages: numeroPagine,
@@ -91,11 +92,7 @@ function buildDeliveredTable(json) {
                 $("#delivered").empty();
                 paginaTabella = (page - 1) * 10;
                 buildDeliveredTable(json)
-                console.log("cambio pagina");
-
             }
-        }).on('page', function (event, page) {
-            console.info(page + ' (from event listening)');
         });
     });
 }

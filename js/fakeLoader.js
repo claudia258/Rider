@@ -58,12 +58,9 @@
     }; 
 }(jQuery));
 
-
 function showSpinner(){
 	$("#fakeLoaderId").addClass("fakeLoader");
 	$("#fakeLoaderId").show();
-	
-	console.log("start Spinner");
 	$.fakeLoader({
                     bgColor: '#3498db',
                     spinner:"spinner3",
@@ -73,7 +70,7 @@ function showSpinner(){
 
 function stopSpinner(){
 	var fadeOutDelay = 0;
-	var fadeOutTime = 3000;
+	var fadeOutTime = 2000;
 	
 	setTimeout(function(){ 
 		$("#fakeLoaderId").fadeOut(fadeOutTime);
