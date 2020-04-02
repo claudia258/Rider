@@ -12,9 +12,11 @@
     <script type="text/javascript" src="js/notify.js"></script>
     <script type="text/javascript" src="js/fakeLoader.js"></script>
     <link href="css/fakeLoader.min.css" rel="stylesheet">
+    <script src="js/jquery.twbsPagination.js"></script>
+
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.pagination').hide();
+            $('#pagination').hide();
             mostra(false);
         });
     </script>
@@ -55,7 +57,7 @@
         <div id="titolePartiti">
             <h5><b> Ordini Partiti/Consegnati:</b></h5>
         </div>
-        <table class="table table-hover table-info" id="delivered">
+        <table class="table table-hover table-info paginated" id="delivered">
             <thead>
 
             </thead>
@@ -64,22 +66,8 @@
             <tbody>
             </tbody>
         </table>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
+        <nav aria-label="Page navigation" id = "scorrimentoPagine">
+            <ul class="pagination" id="pagination" style="display: flex; justify-content: center;"></ul>
         </nav>
 
         <div class="container">

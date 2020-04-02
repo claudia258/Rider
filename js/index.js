@@ -3,13 +3,15 @@ $(document).ready(function () {
         caricaRiderPartiti()
     }, 20000);
 
+    paginaTabella = 0;
+
     $('#buttonList').click(function () {
         showSpinner();
         caricaRiderCreati();
         caricaRiderPartiti();
+        $("#pagination").show();
         mostra(true);
     });
-
     stopSpinner();
 });
 
@@ -35,14 +37,10 @@ function caricaRiderCreati() {
 function caricaRiderPartiti() {
     doCall('GET', 'http://212.237.32.76:3002/status', undefined, function (json) {
         buildDeliveredTable(json);
-        $(function() {
-            $('.pagination').show();
-            paginateTable('#delivered', 10);
-            
-          });
-    }, function () {
+    }), function () {
         $.notify("Chiamata Fallita Riprovare!", "error");
-    });
+
+    }
 }
 
 function buildCreatedTable(json) {
@@ -71,18 +69,39 @@ function buildDeliveredTable(json) {
     var tableHead = "<tr><td><b>ID</b></td><td><b>Merce</b></td><td><b>Stato</b></td><td><b>Partito</b></td><td><b>Consegnato</b></td></td>";
     table.append(tableHead);
 
-    json.forEach(element => {
-        var dataPartenza = new Date(element.startDate).toLocaleString('en-GB', { timeZone: 'UTC' });
-        var dataArrivo = new Date(element.endDate).toLocaleString('en-GB', { timeZone: 'UTC' });
-
-        if (element.status == 'CONSEGNA') {
-            rider += '<tr><td>' + element._id + '</td><td>' + element.merce + '</td><td><font color="orange">' + element.status + '</td></font><td>' + dataPartenza + '</td><td><i>IN CONSEGNA</i></td></tr>';
-        } else {
-            rider += '<tr><td>' + element._id + '</td><td>' + element.merce + '</td><td><font color="green">' + element.status + '</td></font><td>' + dataPartenza + '</td><td>' + dataArrivo + '</td></tr>';
+    numeroPagine = Math.ceil(json.length / 10);
+    console.log(json.length);
+    json.forEach(function (element, i) {
+        if ((paginaTabella + i) >= json.length || i >= 10) {
+            return false;
         }
-    });
+            var dataPartenza = new Date(json[paginaTabella + i].startDate).toLocaleString('en-GB', { timeZone: 'UTC' });
+            var dataArrivo = new Date(json[paginaTabella + i].endDate).toLocaleString('en-GB', { timeZone: 'UTC' });
 
-    table.append(rider);
+            if (json[paginaTabella + i].status == 'CONSEGNA') {
+                rider += '<tr><td>' + json[paginaTabella + i]._id + '</td><td>' + json[paginaTabella + i].merce + '</td><td><font color="orange">' + json[paginaTabella + i].status + '</td></font><td>' + dataPartenza + '</td><td><i>IN CONSEGNA</i></td></tr>';
+            } else {
+                rider += '<tr><td>' + json[paginaTabella + i]._id + '</td><td>' + json[paginaTabella + i].merce + '</td><td><font color="green">' + json[paginaTabella + i].status + '</td></font><td>' + dataPartenza + '</td><td>' + dataArrivo + '</td></tr>';
+            }
+            table.append(rider);
+    });
+        $(function () {
+            window.pagObj = $('#pagination').twbsPagination({
+                totalPages: numeroPagine,
+                visiblePages: 5,
+                onPageClick: function (event, page) {
+                    $("#delivered").empty();
+                    paginaTabella = (page - 1) * 10;
+                    buildDeliveredTable(json)
+                    console.log("cambio pagina");
+
+                }
+            }).on('page', function (event, page) {
+                console.info(page + ' (from event listening)');
+            });
+        });
+    
+
 }
 
 //Utility
@@ -121,59 +140,4 @@ function ordinaByData(json) {
         return (new Date(b.startDate)) - (new Date(a.startDate));
     });
 }
-
-function paginateTable(table, pages) {
-
-    var $table = $(table);
-    var $rows = $('tbody > tr', $table);
-    var numPages = Math.ceil($rows.length / pages) - 1;
-    var current = 0;
-
-    var $nav = $('ul', 'div.wrapper-paging');
-    var $back = $nav.find('li:first-child a');
-    var $next = $nav.find('li:last-child a');
-
-    $nav.find('a.paging-this strong').text(current + 1);
-    $nav.find('a.paging-this span').text(numPages + 1);
-    $back
-        .addClass('paging-disabled')
-        .click(function () {
-            pagination('<');
-        });
-    $next.click(function () {
-        pagination('>');
-    });
-
-    $rows.hide().slice(0, pages).show();
-
-    var pagination = function (direction) {
-        var reveal = function (current) {
-            $back.removeClass('paging-disabled');
-            $next.removeClass('paging-disabled');
-
-            $rows.hide().slice(0 * 10, 0 * 10 + 10).show();
-
-            $nav.find('a.paging-this strong').text(current + 1);
-        };
-
-        if (direction == '<') {
-            if (current > 1) {
-                reveal(current -= 1);
-            }
-            else if (current == 1) {
-                reveal(current -= 1);
-                $back.addClass('paging-disabled');
-            }
-        } else {
-            if (current < numPages - 1) {
-                reveal(current += 1);
-            }
-            else if (current == numPages - 1) {
-                reveal(current += 1);
-                $next.addClass('paging-disabled');
-            }
-        }
-    }
-}
-
 
