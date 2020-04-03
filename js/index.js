@@ -1,19 +1,18 @@
 let host = 'http://212.237.32.76:3002/';
 var paginaTabella = 1;
 var indiceTabella = 0;
-var numeroElementi = $('#numeroElementi').find(":selected").val();
-
+var elementiMostrati = 10;
 
 $(document).ready(function () {
     setInterval(() => {
-        caricaRiderPartiti()
+        caricaRiderPartiti(elementiMostrati)
     }, 20000);
 
     $('#buttonList').click(function () {
         showSpinner();
-        caricaRiderCreati();
-        caricaRiderPartiti();
         elementi();
+        caricaRiderCreati();
+        caricaRiderPartiti(elementiMostrati);
         mostra(true);
         stopSpinner();
     });
@@ -32,21 +31,20 @@ function caricaRiderCreati() {
 }
 
 function rideOrder() {
-    var id = $(this).attr("data-id");
-    doCall('GET', host+'start' + id, undefined, function () {
+    var id = $('.startRider').attr("data-id");
+    doCall('GET', host+'start/' + id, undefined, function () {
         caricaRiderCreati();
-        caricaRiderPartiti();
+        caricaRiderPartiti(elementiMostrati);
     }, function () {
         $.notify("Chiamata Fallita Riprovare!", "error");
     });
 }
 
-function caricaRiderPartiti() {
+function caricaRiderPartiti(elementiMostrati) {
     doCall('GET', host+'status', undefined, function (json) {
-        buildDeliveredTable(json);
+        buildDeliveredTable(json, elementiMostrati);
     }), function () {
         $.notify("Chiamata Fallita Riprovare!", "error");
-
     }
 }
 
@@ -64,32 +62,30 @@ function buildCreatedTable(json) {
     table.append(rider);
 }
 
-function buildDeliveredTable(json) {
+function buildDeliveredTable(json, elementiMostrati) {
     var table = $('#delivered');
     table.empty();
     json = json.sort(function (a, b) {
         json = ordinaByData(json);
     });
-
     var tableHead = "<tr><td><b>ID</b></td><td><b>Merce</b></td><td><b>Stato</b></td><td><b>Partito</b></td><td><b>Consegnato</b></td></td>";
     table.append(tableHead);
 
-    numeroPagine = Math.ceil(json.length / 10);
     json.forEach(function (element, i) {
         var rider = '';
-        if ((paginaTabella + i) >= json.length || i >= 10) {
+        if ((indiceTabella + i) >= json.length || i >= elementiMostrati) {
             return false;
         }
-        var dataPartenza = new Date(json[paginaTabella + i].startDate).toLocaleString('en-GB', { timeZone: 'UTC' });
-        var dataArrivo = new Date(json[paginaTabella + i].endDate).toLocaleString('en-GB', { timeZone: 'UTC' });
-        if (json[paginaTabella + i].status == 'CONSEGNA') {
-            rider += '<tr><td>' + json[paginaTabella + i]._id + '</td><td>' + json[paginaTabella + i].merce + '</td><td><font color="orange">' + json[paginaTabella + i].status + '</td></font><td>' + dataPartenza + '</td><td><i>IN CONSEGNA</i></td></tr>';
+        var dataPartenza = new Date(json[indiceTabella + i].startDate).toLocaleString('en-GB', { timeZone: 'UTC' });
+        var dataArrivo = new Date(json[indiceTabella + i].endDate).toLocaleString('en-GB', { timeZone: 'UTC' });
+        if (json[indiceTabella + i].status == 'CONSEGNA') {
+            rider += '<tr><td>' + json[indiceTabella + i]._id + '</td><td>' + json[indiceTabella + i].merce + '</td><td><font color="orange">' + json[indiceTabella + i].status + '</td></font><td>' + dataPartenza + '</td><td><i>IN CONSEGNA</i></td></tr>';
         } else {
-            rider += '<tr><td>' + json[paginaTabella + i]._id + '</td><td>' + json[paginaTabella + i].merce + '</td><td><font color="green">' + json[paginaTabella + i].status + '</td></font><td>' + dataPartenza + '</td><td>' + dataArrivo + '</td></tr>';
+            rider += '<tr><td>' + json[indiceTabella + i]._id + '</td><td>' + json[indiceTabella + i].merce + '</td><td><font color="green">' + json[indiceTabella + i].status + '</td></font><td>' + dataPartenza + '</td><td>' + dataArrivo + '</td></tr>';
         }
         table.append(rider);
     });
-    pagination(json);
+    pagination(json, elementiMostrati);
 }
 
 //Utility
@@ -141,18 +137,30 @@ function elementi(){
         option += '<option value=' + (i+1)*10 + '>' + (i+1)*10 + '</option>';
     });
     tendina.append(option);
+    mostraElementi();
 }
 
-function pagination(json){
+function mostraElementi (){
+    $("#numeroElementi").change(function(){
+       elementiMostrati =  $('#numeroElementi').find(":selected").val();
+        caricaRiderPartiti(elementiMostrati);
+    })
+
+}
+
+function pagination(json, elementiMostrati){
+    var numeroPagine = Math.ceil(json.length / elementiMostrati);
     $(function () {
         window.pagObj = $('#pagination').twbsPagination({
             totalPages: numeroPagine,
             visiblePages: 5,
             initiateStartPageClick: false,
+            startPage: paginaTabella,
             onPageClick: function (event, page) {
                 $("#delivered").empty();
-                paginaTabella = (page - 1) * 10;
-                buildDeliveredTable(json)
+                paginaTabella = page;
+                indiceTabella = (paginaTabella - 1) * elementiMostrati;
+                buildDeliveredTable(json, elementiMostrati)
             }
         });
     });
