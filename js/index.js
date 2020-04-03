@@ -20,7 +20,7 @@ $(document).ready(function () {
 
 function caricaRiderCreati() {
 
-    doCall('GET', host+'list', undefined, function (json) {
+    doCall('GET', host + 'list', undefined, function (json) {
         buildCreatedTable(json);
         $('.startRider').click(function () {
             rideOrder();
@@ -32,7 +32,7 @@ function caricaRiderCreati() {
 
 function rideOrder() {
     var id = $('.startRider').attr("data-id");
-    doCall('GET', host+'start/' + id, undefined, function () {
+    doCall('GET', host + 'start/' + id, undefined, function () {
         caricaRiderCreati();
         caricaRiderPartiti(elementiMostrati);
     }, function () {
@@ -41,7 +41,7 @@ function rideOrder() {
 }
 
 function caricaRiderPartiti(elementiMostrati) {
-    doCall('GET', host+'status', undefined, function (json) {
+    doCall('GET', host + 'status', undefined, function (json) {
         buildDeliveredTable(json, elementiMostrati);
     }), function () {
         $.notify("Chiamata Fallita Riprovare!", "error");
@@ -49,13 +49,10 @@ function caricaRiderPartiti(elementiMostrati) {
 }
 
 function buildCreatedTable(json) {
-    var table = $('#created');
+    var table = $('#createdBody');
     var rider = '';
-
+    
     table.empty();
-    var tableHead = "<tr><td><b>ID</b></td><td><b>Merce</b></td><td><b>Stato</b></td><td><b></b></td></td>";
-    table.append(tableHead);
-
     json.forEach(element => {
         rider += '<tr><td>' + element._id + '</td><td>' + element.merce + '</td><td><font color="red">' + element.status + '</td></font><td><button data-id="' + element._id + '" class="btn btn-sm btn-info startRider" style="width: 100px;" type="submit">Ride</button></td></tr>';
     });
@@ -63,13 +60,12 @@ function buildCreatedTable(json) {
 }
 
 function buildDeliveredTable(json, elementiMostrati) {
-    var table = $('#delivered');
+    var table = $('#deliveredBody');
     table.empty();
+
     json = json.sort(function (a, b) {
         json = ordinaByData(json);
     });
-    var tableHead = "<tr><td><b>ID</b></td><td><b>Merce</b></td><td><b>Stato</b></td><td><b>Partito</b></td><td><b>Consegnato</b></td></td>";
-    table.append(tableHead);
 
     json.forEach(function (element, i) {
         var rider = '';
@@ -129,39 +125,42 @@ function ordinaByData(json) {
     });
 }
 
-function elementi(){
+function elementi() {
     var tendina = $("#numeroElementi");
     var option = '';
 
-    $.each(new Array(10), function(i){
-        option += '<option value=' + (i+1)*10 + '>' + (i+1)*10 + '</option>';
+    $.each(new Array(10), function (i) {
+        option += '<option value=' + (i + 1) * 10 + '>' + (i + 1) * 10 + '</option>';
     });
     tendina.append(option);
     mostraElementi();
 }
 
-function mostraElementi (){
-    $("#numeroElementi").change(function(){
-       elementiMostrati =  $('#numeroElementi').find(":selected").val();
+function mostraElementi() {
+    $("#numeroElementi").change(function () {
+        elementiMostrati = $('#numeroElementi').find(":selected").val();
         caricaRiderPartiti(elementiMostrati);
+
     })
 
 }
 
-function pagination(json, elementiMostrati){
+function pagination(json, elementiMostrati) {
+    var component = "<ul class='pagination' id='pagination' style='display: flex; justify-content: center;'></ul>"
+    $('#scorrimentoPagine').html(component);
+
     var numeroPagine = Math.ceil(json.length / elementiMostrati);
-    $(function () {
-        window.pagObj = $('#pagination').twbsPagination({
-            totalPages: numeroPagine,
-            visiblePages: 5,
-            initiateStartPageClick: false,
-            startPage: paginaTabella,
-            onPageClick: function (event, page) {
-                $("#delivered").empty();
-                paginaTabella = page;
-                indiceTabella = (paginaTabella - 1) * elementiMostrati;
-                buildDeliveredTable(json, elementiMostrati)
-            }
-        });
+    $('#pagination').twbsPagination({
+        totalPages: numeroPagine,
+        visiblePages: 5,
+        initiateStartPageClick: false,
+        startPage: paginaTabella,
+        onPageClick: function (event, page) {
+            $("#deliveredBody").empty();
+            paginaTabella = page;
+            indiceTabella = (paginaTabella - 1) * elementiMostrati;
+            buildDeliveredTable(json, elementiMostrati)
+        }
     });
+
 }

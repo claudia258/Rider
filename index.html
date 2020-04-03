@@ -45,11 +45,16 @@
         </div>
         <table class="table table-striped table-hover" id="created">
             <thead>
-
+                <tr>
+                    <th>ID</th>
+                    <th>Merce</th>
+                    <th>Stato</th>
+                    <th>Action</th>
+                </tr>
             </thead>
 
 
-            <tbody>
+            <tbody id ="createdBody">
             </tbody>
         </table>
 
@@ -58,11 +63,17 @@
         </div>
         <table class="table table-hover table-info paginated" id="delivered">
             <thead>
-
+                <tr>
+                    <th>ID</th>
+                    <th>Merce</th>
+                    <th>Stato</th>
+                    <th>Partito</th>
+                    <th>Consegnato</th>
+                </tr>
             </thead>
 
 
-            <tbody>
+            <tbody id="deliveredBody">
             </tbody>
         </table>
 
@@ -72,17 +83,17 @@
                 <select id="numeroElementi"></select>
             </div>
         </div>
-        
-            <nav aria-label="Page navigation" id="scorrimentoPagine">
-                <ul class="pagination" id="pagination" style="display: flex; justify-content: center;"></ul>
-            </nav>
 
-            <div class="container">
-                <div class="btn-group" style="width: 100px;">
-                    <button class="btn btn-sm btn-info caricamento" id="buttonList" type="submit">List</button>
-                </div>
+        <nav aria-label="Page navigation" id="scorrimentoPagine">
+            <ul class="pagination" id="pagination" style="display: flex; justify-content: center;"></ul>
+        </nav>
+
+        <div class="container">
+            <div class="btn-group" style="width: 100px;">
+                <button class="btn btn-sm btn-info caricamento" id="buttonList" type="submit">List</button>
             </div>
         </div>
+    </div>
 
 </body>
 
