@@ -1,42 +1,48 @@
+let host = 'http://212.237.32.76:3002/';
+var paginaTabella = 1;
+var indiceTabella = 0;
+var numeroElementi = $('#numeroElementi').find(":selected").val();
+
+
 $(document).ready(function () {
     setInterval(() => {
         caricaRiderPartiti()
     }, 20000);
 
-    paginaTabella = 0;
-
     $('#buttonList').click(function () {
         showSpinner();
         caricaRiderCreati();
         caricaRiderPartiti();
-        $("#pagination").show();
+        elementi();
         mostra(true);
         stopSpinner();
     });
-    
 });
 
 function caricaRiderCreati() {
 
-    doCall('GET', 'http://212.237.32.76:3002/list', undefined, function (json) {
+    doCall('GET', host+'list', undefined, function (json) {
         buildCreatedTable(json);
-        $('.startRider').click(
-            function rideOrder() {
-                var id = $(this).attr("data-id");
-                doCall('GET', 'http://212.237.32.76:3002/start/' + id, undefined, function () {
-                    caricaRiderCreati();
-                    caricaRiderPartiti();
-                }, function () {
-                    $.notify("Chiamata Fallita Riprovare!", "error");
-                });
-            });
+        $('.startRider').click(function () {
+            rideOrder();
+        })
+    }, function () {
+        $.notify("Chiamata Fallita Riprovare!", "error");
+    });
+}
+
+function rideOrder() {
+    var id = $(this).attr("data-id");
+    doCall('GET', host+'start' + id, undefined, function () {
+        caricaRiderCreati();
+        caricaRiderPartiti();
     }, function () {
         $.notify("Chiamata Fallita Riprovare!", "error");
     });
 }
 
 function caricaRiderPartiti() {
-    doCall('GET', 'http://212.237.32.76:3002/status', undefined, function (json) {
+    doCall('GET', host+'status', undefined, function (json) {
         buildDeliveredTable(json);
     }), function () {
         $.notify("Chiamata Fallita Riprovare!", "error");
@@ -83,18 +89,7 @@ function buildDeliveredTable(json) {
         }
         table.append(rider);
     });
-    $(function () {
-        window.pagObj = $('#pagination').twbsPagination({
-            totalPages: numeroPagine,
-            visiblePages: 5,
-            initiateStartPageClick: false,
-            onPageClick: function (event, page) {
-                $("#delivered").empty();
-                paginaTabella = (page - 1) * 10;
-                buildDeliveredTable(json)
-            }
-        });
-    });
+    pagination(json);
 }
 
 //Utility
@@ -117,6 +112,8 @@ function mostra(show) {
         $("div#titolePartiti").show();
         $("div#titole").hide();
         $("#buttonList").hide();
+        $("#pagination").show();
+        $("#selezionaElementi").show();
     }
     else {
         $("table#created").hide();
@@ -125,6 +122,8 @@ function mostra(show) {
         $("div#titolePartiti").hide();
         $("div#titole").show();
         $("#buttonList").show();
+        $("#pagination").hide();
+        $("#selezionaElementi").hide();
     }
 }
 
@@ -134,3 +133,27 @@ function ordinaByData(json) {
     });
 }
 
+function elementi(){
+    var tendina = $("#numeroElementi");
+    var option = '';
+
+    $.each(new Array(10), function(i){
+        option += '<option value=' + (i+1)*10 + '>' + (i+1)*10 + '</option>';
+    });
+    tendina.append(option);
+}
+
+function pagination(json){
+    $(function () {
+        window.pagObj = $('#pagination').twbsPagination({
+            totalPages: numeroPagine,
+            visiblePages: 5,
+            initiateStartPageClick: false,
+            onPageClick: function (event, page) {
+                $("#delivered").empty();
+                paginaTabella = (page - 1) * 10;
+                buildDeliveredTable(json)
+            }
+        });
+    });
+}

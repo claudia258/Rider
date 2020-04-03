@@ -16,7 +16,6 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#pagination').hide();
             mostra(false);
         });
     </script>
@@ -66,16 +65,24 @@
             <tbody>
             </tbody>
         </table>
-        <nav aria-label="Page navigation" id = "scorrimentoPagine">
-            <ul class="pagination" id="pagination" style="display: flex; justify-content: center;"></ul>
-        </nav>
 
-        <div class="container">
-            <div class="btn-group" style="width: 100px;">
-                <button class="btn btn-sm btn-info caricamento" id="buttonList" type="submit">List</button>
+        <div class="container" id="selezionaElementi">
+            <label class="control-label col-sm-2">Elementi Visualizzati:</label>
+            <div class="col-sm-4">
+                <select id="numeroElementi"></select>
             </div>
         </div>
-    </div>
+        
+            <nav aria-label="Page navigation" id="scorrimentoPagine">
+                <ul class="pagination" id="pagination" style="display: flex; justify-content: center;"></ul>
+            </nav>
+
+            <div class="container">
+                <div class="btn-group" style="width: 100px;">
+                    <button class="btn btn-sm btn-info caricamento" id="buttonList" type="submit">List</button>
+                </div>
+            </div>
+        </div>
 
 </body>
 
